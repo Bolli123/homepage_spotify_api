@@ -1,7 +1,7 @@
 FROM node:16
 
-WORKDIR /api
-COPY . .
+WORKDIR /src
+COPY ./src .
 RUN npm install node
 RUN npm ci
 CMD ["node", "spotifyRequests.js"]
