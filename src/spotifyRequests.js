@@ -162,7 +162,7 @@ async function getFavoriteArtist() {
         const artist = {
             title: data.items[offset].name,
             altTitle: data.items[offset].genres[0],
-            //replace dogshit artist image
+            //replace dogshit artist image 
             image: img ? img : data.items[offset].images[1].url,
             link: "https://open.spotify.com/artist/" + data.items[offset].id
         }
