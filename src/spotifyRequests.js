@@ -125,7 +125,7 @@ async function getAlbumArtByArtist(id, limit = 5) {
 }
 
 async function getFavorite(type, limit, offset = 0) {
-    return await fetch(topUrl + `${type}s?time_range=medium_term&limit=${limit}&offset=${offset}`, {
+    return await fetch(topUrl + `${type}s?time_range=short_term&limit=${limit}&offset=${offset}`, {
         method: 'GET',
         headers: {
             Accept: "application/json",
