@@ -1,5 +1,6 @@
 import fetch from "node-fetch"
 import express from "express"
+import cors from "cors"
 
 const app = express()
 const PORT = process.env.VIRTUAL_PORT
@@ -213,10 +214,10 @@ async function appInit() {
     await checkFavorites()
 }
 
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*')
-    next();
-  })
+app.use(cors({
+    /** Use this when web frontend / production **/
+    origin: `https://bjornbreki.is:${PORT}`,
+}));
 
 app.get('/getFavorites', async (req, res) => {
     res.send(favorites)
