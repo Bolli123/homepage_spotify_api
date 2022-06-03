@@ -10,7 +10,6 @@ var token = {
     expires: Date.now() / 1000
 }
 var getAuthOptions
-var secrets
 var refreshToken
 
 const topUrl = "https://api.spotify.com/v1/me/top/"
@@ -102,8 +101,32 @@ async function getAlbum(id) {
     })
 }
 
+async function getAlbumArtByArtist(id, limit = 5) {
+    return await fetch(`https://api.spotify.com/v1/artists/${id}/albums?limit=${limit}`, {
+        methhod: 'GET',
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "Authorization": token.token
+        }
+    })
+    .then(res => {
+        if (res.status !== 200) {
+            throw Error(res.status)
+        }
+        return res
+    })
+    .then(res => res.json())
+    .then(data => {
+        return data.items[Math.floor(Math.random() * limit)].images[1].url
+    })
+    .catch((error) => {
+        console.log(error)
+    })
+}
+
 async function getFavorite(type, limit, offset = 0) {
-    return await fetch(topUrl + `${type}s?time_range=medium_term&limit=${limit}&offset=${offset}`, {
+    return await fetch(topUrl + `${type}s?time_range=short_term&limit=${limit}&offset=${offset}`, {
         method: 'GET',
         headers: {
             Accept: "application/json",
@@ -131,15 +154,17 @@ async function getFavorite(type, limit, offset = 0) {
 async function getFavoriteArtist() {
     var offset = 0
     return await getFavorite("artist", 2)
-    .then(data => {
+    .then(async data => {
         if (typeof data === 'undefined') return;
         if (data.items[0].name === favorites.album.altTitle) {
             offset += 1
         }
+        var img = await getAlbumArtByArtist(data.items[offset].id)
         const artist = {
             title: data.items[offset].name,
             altTitle: data.items[offset].genres[0],
-            image: data.items[offset].images[1].url,
+            //replace dogshit artist image 
+            image: img ? img : data.items[offset].images[1].url,
             link: "https://open.spotify.com/artist/" + data.items[offset].id
         }
         return artist
