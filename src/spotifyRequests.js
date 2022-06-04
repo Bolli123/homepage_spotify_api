@@ -240,8 +240,7 @@ async function appInit() {
 }
 
 app.use(cors({
-    /** Use this when web frontend / production **/
-    origin: `https://bjornbreki.is:${PORT}`,
+    origin: process.env.VIRTUAL_HOST,
 }));
 
 app.get('/getFavorites', async (req, res) => {
