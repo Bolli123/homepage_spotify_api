@@ -240,7 +240,7 @@ async function appInit() {
 }
 
 app.use(cors({
-    origin: process.env.VIRTUAL_HOST,
+    origin: 'https://bjornbreki.is',
 }));
 
 app.get('/getFavorites', async (req, res) => {
